@@ -12,12 +12,12 @@
 const projectsData = [
     {
         id: 1,
-        title: "Cell Test Hardware Validation Tool",
+        title: "Cell Test Hardware Validation Pipeline",
         shortDescription: "Automated validation process for cell test hardware, reducing validation time from 23 to 4 hours.",
         fullDescription: "Created a comprehensive tool that automates the validation of cell test hardware across multiple lab locations. The solution includes a data pipeline with a custom front-end interface, allowing users to complete the validation process with a single button press. This innovation dramatically decreased the equipment validation time from 23 hours to just 4 hours, significantly improving lab efficiency.",
         techStack: ["Python", "SQL", "Data Visualization", "Front-end Development"],
         image: "assets/images/project-validation.jpg",
-        githubLink: "https://github.com/Nate-R-L/cell-validation-tool",
+        githubLink: "",
         demoLink: ""
     },
     {
@@ -27,7 +27,7 @@ const projectsData = [
         fullDescription: "Developed a comprehensive auction website for Third Coast Supply Company, enabling customers to bid on company products. The platform features robust functionality including mass product uploading, product image handling, and a responsive mobile interface. The site has successfully facilitated over $1.2 million in transactions since its launch, becoming an essential business tool for the company.",
         techStack: ["JavaScript", "HTML/CSS", "E-commerce", "Database Design"],
         image: "assets/images/project-auction.jpg",
-        githubLink: "https://github.com/Nate-R-L/auction-platform",
+        githubLink: "",
         demoLink: ""
     },
     {
@@ -37,7 +37,7 @@ const projectsData = [
         fullDescription: "Created and maintained a centralized GitHub repository containing specialized analysis scripts for the Tesla battery team. These scripts provide powerful tools for processing, visualizing, and validating cell electrical test data across various testing scenarios. The repository has become a crucial resource for the team, standardizing analysis approaches and improving consistency in data interpretation.",
         techStack: ["Python", "Data Analysis", "GitHub", "Battery Testing"],
         image: "assets/images/project-analysis.jpg",
-        githubLink: "https://github.com/Nate-R-L/battery-analysis-tools",
+        githubLink: "",
         demoLink: ""
     },
     {
@@ -45,9 +45,9 @@ const projectsData = [
         title: "Inventory Management System",
         shortDescription: "Internal inventory system with barcode functionality and document generation capabilities.",
         fullDescription: "Designed and implemented a comprehensive inventory management system for Third Coast Supply Company to track and maintain their product catalog. The system features barcode printing and scanning functionality, along with automated generation of Purchase Orders and Invoices in PDF format. This solution has streamlined inventory processes and improved tracking accuracy throughout the organization.",
-        techStack: ["JavaScript", "Database Design", "PDF Generation", "Barcode Technology"],
+        techStack: ["Python", "Django", "Database Design", "PDF Generation", "Barcode Technology"],
         image: "assets/images/project-inventory.jpg", 
-        githubLink: "https://github.com/Nate-R-L/inventory-system",
+        githubLink: "",
         demoLink: ""
     },
     {
@@ -57,7 +57,7 @@ const projectsData = [
         fullDescription: "Developed a sophisticated MATLAB model for the UC Berkeley Combustion Modeling Lab that simulates multi-species gas diffusion through specialized membranes. The model was created to support graduate student research investigating flame propagation in stratified fuel mixtures. The project included designing and conducting validation experiments to measure local gas concentration, confirming the model's accuracy and enabling further research applications.",
         techStack: ["MATLAB", "Scientific Modeling", "Experimental Design", "Data Validation"],
         image: "assets/images/project-diffusion.jpg",
-        githubLink: "https://github.com/Nate-R-L/gas-diffusion-model",
+        githubLink: "",
         demoLink: ""
     },
     {
@@ -67,7 +67,7 @@ const projectsData = [
         fullDescription: "Created an automated dashboard tool using Python and Power BI that provides real-time insights into battery formation processes. This tool enables proactive analysis of battery performance metrics and identifies potential issues before they impact production. The dashboard aggregates data from multiple sources and presents key performance indicators in an intuitive visual format, allowing quick decision-making by engineering and production teams.",
         techStack: ["Python", "Power BI", "Data Analysis", "Automation"],
         image: "assets/images/project-dashboard.jpg",
-        githubLink: "https://github.com/Nate-R-L/battery-dashboard",
+        githubLink: "",
         demoLink: ""
     }
 ];
@@ -88,7 +88,7 @@ function renderProjects() {
         // Create project card HTML
         projectCard.innerHTML = `
             <div class="project-image">
-                <img src="${project.image}" alt="${project.title}" onerror="this.src='assets/images/placeholder-project.jpg'">
+                <img src="${project.image}" alt="${project.title}" onerror="this.src='assets/images/placeholder-project.png'">
             </div>
             <div class="project-info">
                 <h3>${project.title}</h3>
