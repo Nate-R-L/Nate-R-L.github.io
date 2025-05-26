@@ -79,7 +79,7 @@
                     </div>
                 </div>
                 <div class="about-text" data-aos="fade-left">
-                    <p>I'm a <strong>Cell & Data Engineer</strong> based in San Francisco, CA, with a passion for automating lab processes and combining hardware engineering with software solutions.</p>
+                    <p>I'm a <strong>Cell & Data Engineer</strong> based in San Francisco, CA, with a passion for building cool things.</p>
                     <p>Currently working at <strong>Tesla</strong>, I focus on battery validation, cell testing, and building data pipelines that improve efficiency and accuracy. My background in Chemical Engineering from <strong>UC Berkeley</strong> gives me a strong foundation in materials science and applied physical sciences.</p>
                     <p>I thrive in multifaceted projects where I can apply my expertise in cell electrical testing, failure analysis, and data-driven decision making to drive strategic innovations.</p>
                     <div class="about-details">
@@ -134,7 +134,7 @@
                     <h3>Battery Technologies</h3>
                     <div class="skills-grid">
                         <div class="skill-item">
-                            <i class="fas fa-bolt"></i>
+                            <i class="fas fa-battery-full"></i>
                             <span>Cell Design</span>
                         </div>
                         <div class="skill-item">
@@ -170,6 +170,14 @@
                         <div class="skill-item">
                             <i class="fas fa-database"></i>
                             <span>SQL</span>
+                        </div>
+                        <div class="skill-item">
+                            <i class="fa-brands fa-js"></i>
+                            <span>JavaScript</span>
+                        </div>
+                        <div class="skill-item">
+                            <i class="fa-brands fa-html5"></i>
+                            <span>HTML/CSS</span>
                         </div>
                         <div class="skill-item">
                             <i class="fab fa-github"></i>
@@ -306,7 +314,10 @@
                     </div>
                 </div>
                 <div class="contact-form" data-aos="fade-left">
-                    <form id="contactForm">
+                    <form id="contactForm" action="https://formspree.io/f/xgvkjbne" method="POST">
+                        <input type="hidden" name="_next" value="https://nate-r-l.github.io/#contact">
+                        <input type="hidden" name="_subject" value="Portfolio Contact Form Submission">
+                        
                         <div class="form-group">
                             <label for="name">Name</label>
                             <input type="text" id="name" name="name" required>
@@ -314,7 +325,7 @@
                         </div>
                         <div class="form-group">
                             <label for="email">Email</label>
-                            <input type="email" id="email" name="email" required>
+                            <input type="email" id="email" name="_replyto" required>
                             <div class="error-message" id="emailError"></div>
                         </div>
                         <div class="form-group">

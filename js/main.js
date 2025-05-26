@@ -91,7 +91,7 @@ function scrollToSection(sectionId) {
 
 // Form validation
 if (contactForm) {
-    contactForm.addEventListener('submit', (e) => {
+    contactForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         
         // Reset errors
@@ -121,14 +121,37 @@ if (contactForm) {
             isValid = false;
         }
         
-        // If all valid, submit the form (or show success message for demo)
+        // If validation passes, submit to Formspree
         if (isValid) {
-            // In a real scenario, you would use AJAX to submit the form
-            // For demo purposes, just show a success message
-            showSuccessMessage('Thanks for your message! I\'ll get back to you soon.');
-            
-            // Reset form
-            contactForm.reset();
+            try {
+                // Get form data
+                const formData = new FormData(contactForm);
+                
+                // Submit to Formspree
+                const response = await fetch('https://formspree.io/f/xgvkjbne', {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                });
+                
+                if (response.ok) {
+                    showSuccessMessage('Thanks for your message! I\'ll get back to you soon.');
+                    contactForm.reset();
+                } else {
+                    const data = await response.json();
+                    if (data.errors) {
+                        throw new Error(data.errors.map(error => error.message).join(', '));
+                    } else {
+                        throw new Error('Form submission failed');
+                    }
+                }
+                
+            } catch (error) {
+                console.error('Form submission error:', error);
+                showFormError('Sorry, there was an error sending your message. Please try emailing me directly at nlebherz44@gmail.com');
+            }
         }
     });
 }
