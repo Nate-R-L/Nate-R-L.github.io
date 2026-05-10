@@ -19,6 +19,11 @@
     
     <!-- Custom CSS -->
     <link rel="stylesheet" href="css/styles.css">
+
+    <!-- Prevent flash of wrong theme -->
+    <script>
+    (function(){var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);else if(window.matchMedia('(prefers-color-scheme:dark)').matches)document.documentElement.setAttribute('data-theme','dark');})();
+    </script>
 </head>
 <body>
     <!-- Navigation -->
@@ -35,6 +40,16 @@
                     <li><a href="#resume" class="nav-link">Resume</a></li>
                     <li><a href="#contact" class="nav-link">Contact</a></li>
                 </ul>
+                <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+                    <span class="toggle-label toggle-label--light">light</span>
+                    <span class="toggle-label toggle-label--dark">dark</span>
+                    <div class="toggle-battery">
+                        <div class="toggle-battery__body">
+                            <div class="toggle-battery__fill"></div>
+                        </div>
+                        <div class="toggle-battery__terminal"></div>
+                    </div>
+                </button>
                 <div class="hamburger">
                     <span class="bar"></span>
                     <span class="bar"></span>
@@ -46,8 +61,9 @@
 
     <!-- Hero Section -->
     <section class="hero" id="home">
+        <canvas id="ionCanvas"></canvas>
         <div class="container">
-            <div class="hero-content" data-aos="fade-up">
+            <div class="hero-content">
                 <h1>Nathan Lebherz</h1>
                 <h2>Cell & Data Engineer</h2>
                 <p>Building better batteries through data-driven innovation</p>
@@ -259,14 +275,14 @@
                         <div class="timeline-content">
                             <h4>Senior Cell Test Engineer</h4>
                             <h5>Tesla, Inc | September 2022 - Present</h5>
-                            <p>Lead engineer for 2 lab locations overseeing 4000 cell test channels for cell abuse and reliability, characterization, and aging test methods.</p>
+                            <p>Lead and first engineer at new facility overseeing 4000 cell test channels for cell abuse and reliability, characterization, and aging test methods.</p>
                         </div>
                     </div>
                     <div class="timeline-item">
                         <div class="timeline-dot"></div>
                         <div class="timeline-content">
                             <h4>Lead Software Developer</h4>
-                            <h5>Third Coast Supply Company | May 2023 – Present</h5>
+                            <h5>Third Coast Supply Company | May 2023 – June 2025</h5>
                             <p>Created multiple web apps including an inventory management system and auction site for customers. Over $1.2 million transacted to date.</p>
                         </div>
                     </div>
@@ -346,7 +362,7 @@
         <div class="container">
             <div class="footer-content">
                 <div class="copyright">
-                    <p>&copy; 2025 Nathan Lebherz. All rights reserved.</p>
+                    <p>&copy; 2026 Nathan Lebherz. All rights reserved.</p>
                 </div>
                 <div class="social-links">
                     <a href="https://linkedin.com/in/nlebherz" target="_blank" rel="noopener noreferrer">
@@ -368,6 +384,18 @@
                 <!-- Modal content will be dynamically inserted here -->
             </div>
         </div>
+    </div>
+
+    <!-- Scroll Progress Bar -->
+    <div class="scroll-progress-bar" aria-hidden="true"></div>
+
+    <!-- Battery Scroll Indicator -->
+    <div class="scroll-battery" aria-hidden="true">
+        <div class="scroll-battery__terminal"></div>
+        <div class="scroll-battery__body">
+            <div class="scroll-battery__fill"></div>
+        </div>
+        <div class="scroll-battery__label">scroll</div>
     </div>
 
     <!-- AOS Animation Library -->

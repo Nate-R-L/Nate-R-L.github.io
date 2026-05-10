@@ -1,13 +1,6 @@
 /**
  * Nathan Lebherz Portfolio
  * Main JavaScript File
- *
- * This file contains the main JavaScript functionality for the portfolio:
- * 1. Mobile menu toggle
- * 2. Smooth scrolling
- * 3. Animation on scroll initialization
- * 4. Form validation
- * 5. Scroll to top button
  */
 
 // DOM elements
@@ -23,28 +16,128 @@ const emailError = document.getElementById('emailError');
 const messageError = document.getElementById('messageError');
 const formSuccess = document.getElementById('formSuccess');
 
-// Initialize AOS (Animation On Scroll)
+// ===== DARK MODE =====
+const themeToggle = document.getElementById('themeToggle');
+const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+
+function setTheme(theme) {
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('theme', theme);
+}
+
+themeToggle.addEventListener('click', () => {
+    const current = document.documentElement.getAttribute('data-theme');
+    setTheme(current === 'dark' ? 'light' : 'dark');
+});
+
+prefersDark.addEventListener('change', (e) => {
+    if (!localStorage.getItem('theme')) {
+        setTheme(e.matches ? 'dark' : 'light');
+    }
+});
+
+// ===== ION FLOW PARTICLES =====
+class IonField {
+    constructor(canvas) {
+        this.canvas = canvas;
+        this.ctx = canvas.getContext('2d');
+        this.particles = [];
+        this.animating = true;
+        this.resize();
+        this.init();
+        window.addEventListener('resize', () => this.resize());
+    }
+
+    resize() {
+        this.canvas.width = this.canvas.offsetWidth;
+        this.canvas.height = this.canvas.offsetHeight;
+    }
+
+    init() {
+        const count = window.innerWidth < 768 ? 20 : 40;
+        this.particles = [];
+        for (let i = 0; i < count; i++) {
+            this.particles.push({
+                x: Math.random() * this.canvas.width,
+                y: Math.random() * this.canvas.height,
+                r: Math.random() * 2 + 1,
+                dx: Math.random() * 0.5 + 0.15,
+                dy: (Math.random() - 0.5) * 0.3,
+                opacity: Math.random() * 0.25 + 0.05
+            });
+        }
+    }
+
+    animate() {
+        if (!this.animating) return;
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        this.particles.forEach(p => {
+            p.x += p.dx;
+            p.y += p.dy;
+            if (p.x > this.canvas.width + 10) {
+                p.x = -10;
+                p.y = Math.random() * this.canvas.height;
+            }
+            if (p.y < -10 || p.y > this.canvas.height + 10) {
+                p.y = Math.random() * this.canvas.height;
+            }
+            this.ctx.beginPath();
+            this.ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+            this.ctx.fillStyle = `rgba(255, 255, 255, ${p.opacity})`;
+            this.ctx.fill();
+        });
+        requestAnimationFrame(() => this.animate());
+    }
+
+    stop() {
+        this.animating = false;
+    }
+}
+
+// ===== SCROLL PROGRESS & BATTERY =====
+const scrollBattery = document.querySelector('.scroll-battery');
+
+function updateScrollProgress() {
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = docHeight > 0 ? Math.min(scrollTop / docHeight, 1) : 0;
+    document.documentElement.style.setProperty('--scroll-progress', progress);
+
+    if (scrollBattery) {
+        scrollBattery.classList.toggle('visible', scrollTop > 100);
+        scrollBattery.classList.toggle('charged', progress > 0.98);
+    }
+}
+
+// ===== INITIALIZATION =====
 document.addEventListener('DOMContentLoaded', () => {
-    // Initialize AOS with custom settings
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // Initialize AOS
     AOS.init({
         duration: 800,
         easing: 'ease-in-out',
         once: true,
-        mirror: false
+        mirror: false,
+        disable: prefersReducedMotion
     });
+
+    // Initialize ion particles
+    const ionCanvas = document.getElementById('ionCanvas');
+    if (ionCanvas && !prefersReducedMotion) {
+        const ionField = new IonField(ionCanvas);
+        ionField.animate();
+    }
 
     // Check for page hash on load
     if (window.location.hash) {
-        const hash = window.location.hash;
-        
-        // Wait a bit for page to fully load before scrolling
         setTimeout(() => {
-            scrollToSection(hash);
+            scrollToSection(window.location.hash);
         }, 100);
     }
 });
 
-// Mobile menu toggle
+// ===== MOBILE MENU =====
 if (hamburger) {
     hamburger.addEventListener('click', () => {
         hamburger.classList.toggle('active');
@@ -52,36 +145,24 @@ if (hamburger) {
     });
 }
 
-// Close mobile menu on link click
 navLinks.forEach(link => {
     link.addEventListener('click', (e) => {
-        // Get the href attribute
         const targetId = link.getAttribute('href');
-        
-        // Check if it's an anchor link
         if (targetId.startsWith('#')) {
             e.preventDefault();
-            
-            // Close mobile menu
             hamburger.classList.remove('active');
             navMenu.classList.remove('active');
-            
-            // Scroll to section
             scrollToSection(targetId);
         }
     });
 });
 
-// Function to scroll to section
 function scrollToSection(sectionId) {
     const section = document.querySelector(sectionId);
-    
     if (section) {
-        // Offset for fixed header
         const headerOffset = 70;
         const sectionPosition = section.getBoundingClientRect().top;
         const offsetPosition = sectionPosition + window.pageYOffset - headerOffset;
-        
         window.scrollTo({
             top: offsetPosition,
             behavior: 'smooth'
@@ -89,24 +170,18 @@ function scrollToSection(sectionId) {
     }
 }
 
-// Form validation
+// ===== FORM VALIDATION =====
 if (contactForm) {
     contactForm.addEventListener('submit', async (e) => {
         e.preventDefault();
-        
-        // Reset errors
         resetErrors();
-        
-        // Validate inputs
         let isValid = true;
-        
-        // Name validation
+
         if (nameInput.value.trim() === '') {
             showError(nameInput, nameError, 'Please enter your name');
             isValid = false;
         }
-        
-        // Email validation
+
         if (emailInput.value.trim() === '') {
             showError(emailInput, emailError, 'Please enter your email');
             isValid = false;
@@ -114,28 +189,21 @@ if (contactForm) {
             showError(emailInput, emailError, 'Please enter a valid email address');
             isValid = false;
         }
-        
-        // Message validation
+
         if (messageInput.value.trim() === '') {
             showError(messageInput, messageError, 'Please enter your message');
             isValid = false;
         }
-        
-        // If validation passes, submit to Formspree
+
         if (isValid) {
             try {
-                // Get form data
                 const formData = new FormData(contactForm);
-                
-                // Submit to Formspree
                 const response = await fetch('https://formspree.io/f/xgvkjbne', {
                     method: 'POST',
                     body: formData,
-                    headers: {
-                        'Accept': 'application/json'
-                    }
+                    headers: { 'Accept': 'application/json' }
                 });
-                
+
                 if (response.ok) {
                     showSuccessMessage('Thanks for your message! I\'ll get back to you soon.');
                     contactForm.reset();
@@ -147,7 +215,6 @@ if (contactForm) {
                         throw new Error('Form submission failed');
                     }
                 }
-                
             } catch (error) {
                 console.error('Form submission error:', error);
                 showFormError('Sorry, there was an error sending your message. Please try emailing me directly at nlebherz44@gmail.com');
@@ -156,50 +223,48 @@ if (contactForm) {
     });
 }
 
-// Helper function to validate email
 function isValidEmail(email) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
 }
 
-// Helper function to show input error
 function showError(input, errorElement, message) {
     input.classList.add('error');
     errorElement.textContent = message;
     errorElement.style.display = 'block';
 }
 
-// Helper function to reset all errors
 function resetErrors() {
-    // Reset input styles
     nameInput.classList.remove('error');
     emailInput.classList.remove('error');
     messageInput.classList.remove('error');
-    
-    // Hide error messages
     nameError.style.display = 'none';
     emailError.style.display = 'none';
     messageError.style.display = 'none';
-    
-    // Hide success message
     formSuccess.style.display = 'none';
 }
 
-// Helper function to show success message
 function showSuccessMessage(message) {
     formSuccess.textContent = message;
     formSuccess.style.display = 'block';
+    formSuccess.style.color = 'var(--success-color)';
 }
 
-// Header scroll effect
+function showFormError(message) {
+    formSuccess.textContent = message;
+    formSuccess.style.display = 'block';
+    formSuccess.style.color = 'var(--error-color)';
+}
+
+// ===== SCROLL EFFECTS =====
+const header = document.querySelector('.header');
+
 window.addEventListener('scroll', () => {
-    const header = document.querySelector('.header');
-    
     if (window.scrollY > 50) {
-        header.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.1)';
-        header.style.padding = '5px 0';
+        header.classList.add('scrolled');
     } else {
-        header.style.boxShadow = 'none';
-        header.style.padding = '0';
+        header.classList.remove('scrolled');
     }
+
+    updateScrollProgress();
 });
